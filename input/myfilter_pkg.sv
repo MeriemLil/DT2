@@ -13,7 +13,7 @@ package myfilter_pkg;
    localparam int         NTAPS           = 5;  
 
 `ifndef SYNTHESIS
-   localparam realtime CLK_PERIOD         = 5.0ns;
+   localparam realtime CLK_PERIOD         = 7.0ns;
 `endif
    
    // 1.2. Constants

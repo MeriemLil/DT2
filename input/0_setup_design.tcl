@@ -23,7 +23,7 @@ set DESIGN_NAME "myfilter"
 ####################################################################################################
 
 set NTAPS                 5       ; # Define your filter's tap count
-set CLOCK_PERIOD          5       ; # Clock period in ns.
+set CLOCK_PERIOD          7       ; # Clock period in ns.
 
 ####################################################################################################
 # Settings for all tools
