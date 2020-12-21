@@ -16,7 +16,74 @@ module filter_unit
    output logic 	       extvalid_out
    );
 
+   dp_cmd_t dpc_cmd;
+   logic cmem_sd;
+   logic cmem_d;
+   logic dmem_d;
+   logic alu_d;
+   logic acc_ext;
+   logic acc_d;
+
+   dpc dpc_1
+       (
+	.clk(clk),
+        .rst_n(rst_n),
+	.ul_in(ul_in),
+	.dl_in(dl_in),
+	.extready_in(extready_in),
+	.cmd_out(dpc_cmd)
+	);
    
+   cmem cmem_1
+        (
+	.clk(clk),
+        .rst_n(rst_n),
+	.sde_in(sde_in),
+	.sd_in(sd_in),
+	.addr_in(dpc_cmd.cmem_addr),
+	.sd_out(cmem_sd),
+	.d_out(cmem_d)
+	);
+
+   dmem dmem_1
+	(
+	.clk(clk),
+        .rst_n(rst_n),
+	.sde_in(sde_in),
+	.sd_in(cmem_sd),
+	.cmd_in(dpc_cmd.dmem_cmd),
+	.addr_in(dpc_cmd.dmem_addr),
+	.d_in(ext_out),
+	.ext_in(ext_in),
+	.sd_out(sd_out),
+	.d_out(dmem_d)
+	);
+
+   alu alu_1 
+	(
+	.clk(clk),
+        .rst_n(rst_n),
+	.cmd_in(dpc_cmd.alu_cmd),
+	.m1_in(cmem_d),
+	.m2_in(dmem_d),
+	.acc_in(acc_d),
+	.d_out(alu_d)
+	);
+
+   acc acc_1
+	(
+	.clk(clk),
+        .rst_n(rst_n),
+	.cmd_in(dpc_cmd.acc_cmd),
+	.d_in(alu_d),
+	.ext_out(ext_out),
+	.d_out(acc_d)
+	);
+
+   assign extvalid_out = dpc_cmd.extvalid;
 endmodule
+
+
+   
 
 

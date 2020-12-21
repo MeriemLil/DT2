@@ -40,7 +40,7 @@ module myfilter
       .rst_n(srst_n),
       .sde_in(sde),
       .sd_in(sdin),
-      .sd_out(ds_out),
+      .sd_out(sdout),
       .ul_in(ul),
       .dl_in(dl),      
       .extready_in(extready_in),
