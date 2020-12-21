@@ -1,0 +1,80 @@
+`include "myfilter.svh"
+import myfilter_pkg::*;
+
+program dpc_test
+  
+  (input logic clk,
+   input logic 	rst_n,
+   output logic ul_in,
+   output logic dl_in, 
+   output logic extready_in, 
+   input 	dp_cmd_t cmd_out
+   );
+
+   default clocking cb @(posedge clk);
+      output 	ul_in;
+      output 	dl_in;
+      output 	extready_in;
+      input 	cmd_out;
+   endclocking
+   
+   initial
+     begin : test_program	
+	
+	///////////////////////////////////////////////////////////////////////////7
+	$info("T1: RESET");
+	///////////////////////////////////////////////////////////////////////////7	
+
+	extready_in = '0;
+	ul_in = '0;
+	dl_in = '0;	
+	wait(rst_n);
+
+	///////////////////////////////////////////////////////////////////////////7
+	$info("T2: PROGRAM");
+	///////////////////////////////////////////////////////////////////////////7	
+
+	cb.extready_in <= '1;	
+	cb.ul_in <= '1;
+	##(NTAPS*3);
+
+	///////////////////////////////////////////////////////////////////////////7
+	$info("T3: RUN-READY");
+	///////////////////////////////////////////////////////////////////////////7	
+	cb.extready_in <= '1;
+	cb.ul_in <= '0;
+	##(NTAPS*3);
+
+	///////////////////////////////////////////////////////////////////////////7
+	$info("T4: RUN-NOTREADY");
+	///////////////////////////////////////////////////////////////////////////7	
+
+	cb.extready_in <= '0;
+	##(NTAPS*3);
+
+	///////////////////////////////////////////////////////////////////////////7
+	$info("T5: UL-DL");
+	///////////////////////////////////////////////////////////////////////////7	
+	cb.extready_in <= '1;
+	##(NTAPS*3/2);
+
+	cb.ul_in <= '1;
+	##(NTAPS*3/2);
+	
+	cb.ul_in <= '0;
+	##(NTAPS*3/2);
+	
+	cb.dl_in <= '1;
+	##(NTAPS*3/2);
+	
+	dl_in <= '0;
+	##(NTAPS*3/2);
+	
+	$finish;
+	
+     end : test_program
+   
+   
+endprogram
+
+
