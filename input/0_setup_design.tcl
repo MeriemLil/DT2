@@ -15,7 +15,7 @@ set DESIGN_NAME "i2c_omux"
 #set DESIGN_NAME "cmem"
 #set DESIGN_NAME "dmem"
 #set DESIGN_NAME "acc"
-#set DESIGN_NAME "alu"
+set DESIGN_NAME "alu"
 #set DESIGN_NAME "dpc"
 
 ####################################################################################################
