@@ -35,6 +35,204 @@ module i2c_fsm
      end : state_reg
 
    // To do: Add combinational logic process
+
+   always_comb
+     begin
+	ul_out = '0;
+   	dl_out = '0;
+  	byteen_out = '0;  
+   	sde_out = '0;
+   	clr_out = '0;
+   	next_out = '0;
+   	oe_out = '0;
+   	osel_out = '0;
+   	ack_out = '0;
+
+	case (state_r)
+	   IDLE:
+	     begin
+		clr_out = '1;
+		if (start_in == '1)
+		   next_state = HRX;
+		else
+		   next_state = IDLE;
+	      end
+
+	   HRX:
+	      begin
+		if (stop_in == '1)
+		   next_state = IDLE;
+		else 
+		   if (scl_rise_in == '1)
+		     begin
+		        next_out = '1;
+		        next_state = HRX;
+		     end
+		   else 
+		     begin
+			next_out = '0;
+			if (byteok_in && scl_fall_in)
+			   next_state = HACK;
+			else
+			   next_state = HRX;
+		     end
+	      end
+
+	   HACK:
+	     begin
+		if (stop_in == '1)
+		   next_state = IDLE;
+		else
+		   begin
+		     if (addrok_in == '1)
+			begin
+			  ack_out = '0;
+			  oe_out = '1;
+			  if (scl_fall_in == '1)
+			     begin
+				clr_out = '1;
+				if (lastbit_in == '1)
+				   next_state = TX;
+				else
+				   next_state = RX;
+			     end
+			  else
+			      begin
+				clr_out = '0;
+				next_state = HACK;
+			      end
+			 end
+		      else
+			begin
+			   ack_out = '1;
+			   oe_out = '0;
+			   clr_out = '0;
+			   if (scl_fall_in == '1)
+			      next_state = IDLE;
+			   else
+			      next_state = HACK;
+			end
+                   end
+	     end
+
+	   TX:
+	     begin
+	        dl_out = '1;
+		byteen_out = '1;
+		osel_out = '1;
+		oe_out = '1;
+
+		if (stop_in == '1)
+		   next_state = IDLE;
+		else
+		   begin
+		     if (scl_rise_in == '1)
+			begin
+ 			   next_out = '1;
+			   next_state = TX;
+			end
+		     else
+			begin
+			   next_out = '0;
+			   if (scl_fall_in == '1)
+			      begin
+				sde_out = '1;
+				if (byteok_in == '1)
+				   next_state = TACK;
+				else
+				   next_state = TX;
+			      end
+			   else
+			      begin
+				sde_out = '0;
+				next_state = TX;
+			      end
+			end
+
+		   end
+	     end
+
+	   TACK:
+	     begin
+		dl_out = '1;
+		byteen_out = '1;
+		clr_out = 1;
+		if (stop_in == '1)
+		   next_state = IDLE;
+		else
+		   begin
+		     if (scl_fall_in == '1)
+			begin
+			   if (frameok_in == '1)
+			      next_state = IDLE;
+			   else
+			      next_state = TX;
+			end
+		     else
+			next_state = TACK;
+		   end
+	     end
+
+	   RX:
+	     begin
+		ul_out = '1;
+		byteen_out = '1;
+		if (stop_in == '1)
+		   next_state = IDLE;
+		else
+		   begin
+		      if (scl_rise_in == '1)
+			begin
+			   next_out = '1;
+			   next_state = RX;
+			end 
+		      else
+			begin
+			   next_out = '0;
+			   if (scl_fall_in == '1)
+			      begin
+				sde_out = '1;
+				if (byteok_in == '1)
+				   next_state = RACK;
+				else
+				   next_state = RX;
+			      end
+			   else
+			      begin
+				sde_out = '0;
+				next_state = RX;
+			      end
+			end
+		   end
+	     end
+
+	   RACK:
+	     begin
+		ul_out = '1;
+		byteen_out = '1;
+		oe_out = '1;
+		clr_out = '1;
+		
+		if (stop_in == '1)
+		   next_state = IDLE;
+		else
+		   begin
+		      if (scl_fall_in == '1)
+			begin
+			   if (frameok_in == '1)
+			      next_state = IDLE;
+			   else
+			      next_state = RX;
+			end
+		      else
+			next_state = RACK;
+		   end
+	     end
+
+	endcase
+
+     end
+
    
 endmodule
 

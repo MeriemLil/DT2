@@ -57,9 +57,9 @@ module i2c_ctr
 		bytectr_r <= '0;
              else 
 	      begin
-		if (next_in == '1 && seven == '1 && bytectr_r < I2C_DATA_BYTES && clr_in == '0)
+		if (next_in == '1 && seven == '1 && bytectr_r < I2C_DATA_BYTES)
 		   bytectr_r <= bytectr_r + 1;	
-             	else if (next_in == '1 && seven == '1 && bytectr_r >= I2C_DATA_BYTES && clr_in == '0)
+             	else if (next_in == '1 && seven == '1 && bytectr_r >= I2C_DATA_BYTES)
                    bytectr_r <= '0;
 	        else 
 		   bytectr_r <= bytectr_r;
