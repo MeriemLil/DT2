@@ -115,7 +115,16 @@ package myfilter_pkg;
 
    // 2.7. dpc command vectors. To do: Add codes for your micro-operations
  
-   const dp_cmd_t CMD_NOP =    '{ 3'b000, DMEM_READ,  3'b000, ALU_NOP,  ACC_NOP,  '0 };
+   const dp_cmd_t CMD_NOP =  '{ 3'b000, DMEM_READ, 3'b000, ALU_NOP, ACC_NOP, '0 };
+   const dp_cmd_t CMD_CLR =  '{ 3'b000, DMEM_CLEAR, 3'b000, ALU_NOP, ACC_NOP, '0 };
+   const dp_cmd_t CMD_SHIFT =  '{ 3'b000, DMEM_SHIFT, 3'b000, ALU_NOP, ACC_NOP, '0 };
+   const dp_cmd_t CMD_SAT_SH =  '{ 3'b000, DMEM_READ, 3'b000, ALU_SATA, ACC_LOAD, '0 };
+   const dp_cmd_t CMD_TAP0F =  '{ 3'b000, DMEM_READ, 3'b000, ALU_MU, ACC_LOAD, '0 };
+   const dp_cmd_t CMD_TAP1 =  '{ 3'b001, DMEM_READ, 3'b001, ALU_ADMU, ACC_LOAD, '0 };
+   const dp_cmd_t CMD_TAP2 =  '{ 3'b010, DMEM_READ, 3'b010, ALU_ADMU, ACC_LOAD, '0 };
+   const dp_cmd_t CMD_TAP3 =  '{ 3'b011, DMEM_READ, 3'b011, ALU_ADMU, ACC_LOAD, '0 };
+   const dp_cmd_t CMD_TAP4 =  '{ 3'b100, DMEM_READ, 3'b100, ALU_ADMU, ACC_LOAD, '0 };
+   const dp_cmd_t CMD_TAP0 =  '{ 3'b000, DMEM_READ, 3'b000, ALU_MU, ACC_LOAD, '1 };
    
       
    ////////////////////////////////////////////////////////////////////////////////
