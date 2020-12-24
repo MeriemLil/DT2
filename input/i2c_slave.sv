@@ -36,6 +36,9 @@ module i2c_slave
    logic               next;
    logic               clr;
 
+   assign sd_out = lastbit;
+   assign sda_inout = sdaw;
+
    i2c_sync i2c_sync_1
      (
 	.clk(clk),
@@ -73,7 +76,7 @@ module i2c_slave
        .frameok_in(frameok),
        .byteok_in(byteok),
        .addrok_in(addrok),
-       .lastbit_in(sd_out),
+       .lastbit_in(lastbit),
        .sde_out(sde_out),
        .ul_out(ul_out),
        .dl_out(dl_out),
@@ -104,14 +107,14 @@ module i2c_slave
       .next_in(next),
       .bit_in(sda),
       .addrok_out(addrok),
-      .bit_out(sd_out)	
+      .bit_out(lastbit)	
 	);
 
    i2c_omux i2c_omux_1
        (
       .clk(clk),
       .rst_n(rst_n),
-      .sdaw_out(sda_inout),
+      .sdaw_out(sdaw),
       .oe_in(oe),
       .osel_in(osel),
       .ack_in(ack),

@@ -34,21 +34,45 @@ interface i2c_if
       #(I2C_CLOCK_PERIOD/2);
       scldrv = '1;
       #(I2C_CLOCK_PERIOD/2);	   
-//      sdadrv = 1;
+      //sdadrv = '1;
    endtask
 
    
    task automatic write_byte ( input logic [7:0] value );
-
+      for (int i = 7; i >= 0; i = i - 1)
+	begin
+	  scldrv = '0;
+      	  #(I2C_HOLD_TIME);
+      	  sdadrv = value[i];
+      	  #(I2C_CLOCK_PERIOD/2);
+          scldrv = '1;
+          #(I2C_CLOCK_PERIOD/2);
+	  //sdadrv = '1;	 
+	end 
    endtask
    
    task automatic read_bit (output logic value);
-
+      scldrv = '0;
+      #(I2C_HOLD_TIME);
+      value = sdadrv;
+      #(I2C_CLOCK_PERIOD/2);
+      scldrv = '1;
+      #(I2C_CLOCK_PERIOD/2);
+      //sdadrv = '1;	  
    endtask; 
    
 
    task automatic read_byte (output logic [7:0] value);
-
+      for (int i = 7; i >= 0; i = i - 1)
+	begin
+	  scldrv = '0;
+      	  #(I2C_HOLD_TIME);
+      	  value[i] = sdadrv;
+      	  #(I2C_CLOCK_PERIOD/2);
+          scldrv = '1;
+          #(I2C_CLOCK_PERIOD/2);
+	  //sdadrv = 1;	 
+	end 
    endtask
    
 endinterface

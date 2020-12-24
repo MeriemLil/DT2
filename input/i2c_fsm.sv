@@ -48,6 +48,8 @@ module i2c_fsm
    	osel_out = '0;
    	ack_out = '0;
 
+	next_state = IDLE;
+
 	case (state_r)
 	   IDLE:
 	     begin
