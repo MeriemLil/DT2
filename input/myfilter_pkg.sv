@@ -26,7 +26,7 @@ package myfilter_pkg;
    localparam int         I2C_FRAME_BYTES = I2C_DATA_BYTES + 1;    
 
    localparam int 	  MULBITS         = DATABITS*2;                // To do: 
-   localparam int 	  ACCBITS         = MULBITS + $clog2(NTAPS-1); // To do: 
+   localparam int 	  ACCBITS         = MULBITS + $clog2(NTAPS); // To do: 
    localparam logic [DATABITS-1:0] K      = 16'b0_010001010011011;   // To do:
    localparam logic [DATABITS-1:0] K2     = 16'b1_010111010110010;   // To do:
    localparam logic [DATABITS-1:0] K4     = 16'b0_000100010100110;   // To do:

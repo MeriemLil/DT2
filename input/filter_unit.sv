@@ -18,11 +18,13 @@ module filter_unit
 
    dp_cmd_t dpc_cmd;
    logic cmem_sd;
-   logic cmem_d;
-   logic dmem_d;
-   logic alu_d;
-   logic acc_ext;
-   logic acc_d;
+   logic [DATABITS-1:0] cmem_d;
+   logic [DATABITS-1:0] dmem_d;
+   logic [ACCBITS-1:0] alu_d;
+   logic [DATABITS-1:0] acc_ext;
+   logic [ACCBITS-1:0] acc_d;
+
+   
 
    dpc dpc_1
        (
@@ -53,7 +55,7 @@ module filter_unit
 	.sd_in(cmem_sd),
 	.cmd_in(dpc_cmd.dmem_cmd),
 	.addr_in(dpc_cmd.dmem_addr),
-	.d_in(ext_out),
+	.d_in(acc_ext),
 	.ext_in(ext_in),
 	.sd_out(sd_out),
 	.d_out(dmem_d)
@@ -76,11 +78,12 @@ module filter_unit
         .rst_n(rst_n),
 	.cmd_in(dpc_cmd.acc_cmd),
 	.d_in(alu_d),
-	.ext_out(ext_out),
+	.ext_out(acc_ext),
 	.d_out(acc_d)
 	);
 
    assign extvalid_out = dpc_cmd.extvalid;
+   assign ext_out = acc_ext;
 endmodule
 
 

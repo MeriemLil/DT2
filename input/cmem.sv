@@ -29,6 +29,8 @@ module cmem
 		  mem_tmp = mem_r;
 		  mem_r <= {mem_tmp[$bits(mem_tmp)-2:0], sd_in};
 		end
+	     else
+		mem_r <= mem_r;
 	   end
       end
 

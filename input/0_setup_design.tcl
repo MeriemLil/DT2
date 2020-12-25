@@ -4,7 +4,7 @@
 
 #set DESIGN_NAME "myfilter"
 #set DESIGN_NAME "i2c_slave"
-#set DESIGN_NAME "filter_unit"
+set DESIGN_NAME "filter_unit"
 #set DESIGN_NAME "reset_sync"
 #set DESIGN_NAME "i2c_detector"
 #set DESIGN_NAME "i2c_omux"
@@ -16,7 +16,7 @@
 #set DESIGN_NAME "dmem"
 #set DESIGN_NAME "acc"
 #set DESIGN_NAME "alu"
-set DESIGN_NAME "dpc"
+#set DESIGN_NAME "dpc"
 
 ####################################################################################################
 # Design Parameters

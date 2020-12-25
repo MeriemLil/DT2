@@ -16,6 +16,9 @@ module dpc
 	
    always_comb
    begin
+   next_state = STOPPED;
+   cmd_out = CMD_NOP;
+
    case(state_r)
       STOPPED:
 	begin
@@ -29,14 +32,12 @@ module dpc
       PROGRAM:
 	begin
 	  cmd_out = CMD_NOP;
-	  if (ul_in == '1)
+	  if (dl_in == '1)
+	     next_state = STOPPED;
+	  else if (ul_in == '1)
 	     next_state = PROGRAM;
 	  else
 	     next_state = EXTIN;
-	  if (dl_in == '1)
-	     next_state = STOPPED;
-	  else
-	     next_state = PROGRAM;
 	end
 
       EXTIN:
@@ -45,10 +46,17 @@ module dpc
 	  if (dl_in == '1 || ul_in == '1)
 	     next_state = STOPPED;
 	  else
-	     next_state = TAP0;
-	  if (extready_in == '1)
-	     cmd_out = CMD_NOP;
-	end
+	    begin
+	      if (extready_in != '1)
+		begin
+	         cmd_out = CMD_NOP;
+	 	 next_state = EXTIN;
+		end
+	      else
+	         next_state = TAP0;
+	    end
+	   end
+
 
       TAP0:
 	begin
@@ -107,7 +115,7 @@ module dpc
       EXTOUT:
 	begin
 	  cmd_out = CMD_TAP0;
-	  next_state = STOPPED;
+	  next_state = PROGRAM;
 	end
    endcase;
    end

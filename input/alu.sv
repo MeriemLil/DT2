@@ -17,7 +17,6 @@ module alu
    logic signed [ACCBITS-1:0] d;
    logic [4:0] cmd;
 
-   logic signed [ACCBITS-1:0] temp;
 
    always_comb
       begin
@@ -27,14 +26,8 @@ module alu
 
 	cmd = cmd_in;
 	
-	temp = acc >>> (DATABITS - 1);
-	if (temp >= 2**(DATABITS-1))
-	   temp = 2**(DATABITS-1) - 1;
-	else if (temp < -(2**(DATABITS-1)))
-	   temp = -(2**(DATABITS-1));
-	else
- 	   temp = temp;
-	 
+	d = '0;
+
 	case (cmd)
           ALU_NOP: d = acc;
 	  ALU_M1: d = m1;
@@ -52,13 +45,22 @@ module alu
 	  ALU_SUM1: d = acc - m1;
 	  ALU_SUM2: d = acc - m2;
 	  ALU_SUMU: d = acc - m1*m2;
-	  ALU_SATA: d = temp;
+	  ALU_SATA: 
+	    begin
+	      d = acc >>> (DATABITS - 1);
+	      if (d >= 2**(DATABITS-1))
+	   	d = 2**(DATABITS-1) - 1;
+	      else if (d < -(2**(DATABITS-1)))
+	        d = -(2**(DATABITS-1));
+	      else
+ 	   	d = d;
+	    end
 	endcase
 
-	d_out = $unsigned(d);
+        
 
       end
-
+   assign d_out = $unsigned(d);
 endmodule
 
    
