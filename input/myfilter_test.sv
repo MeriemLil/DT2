@@ -51,7 +51,37 @@ program myfilter_test
 	      ////////////////////////////////////////////////////////////////
 
 	      // To do: Add test
+	      $info("T2 Filter coefficients sent over I2C");
 	      
+	      i2c_bus.start_condition;
+	      for (int i = I2C_DATA_BYTES - 1; i >= 0 ; i = i - 1)
+		begin
+	          i2c_bus.write_byte({ I2C_ADDRESS, '0 });
+		  i2c_bus.read_bit(ack);
+	          i2c_bus.write_byte(K4[15:8]);
+		  i2c_bus.read_bit(ack);
+		  i2c_bus.write_byte(K4[7:0]);
+		  i2c_bus.read_bit(ack);
+	          i2c_bus.write_byte(K2[15:8]);
+		  i2c_bus.read_bit(ack);
+		  i2c_bus.write_byte(K2[7:0]);
+		  i2c_bus.read_bit(ack);
+	          i2c_bus.write_byte(K[15:8]);
+		  i2c_bus.read_bit(ack);
+	          i2c_bus.write_byte(K[7:0]);
+		  i2c_bus.read_bit(ack);
+		  i2c_bus.write_byte(K2[15:8]);
+		  i2c_bus.read_bit(ack);
+		  i2c_bus.write_byte(K2[7:0]);
+		  i2c_bus.read_bit(ack);
+ 		  i2c_bus.write_byte(K4[15:8]);
+		  i2c_bus.read_bit(ack);
+		  i2c_bus.write_byte(K4[7:0]);
+		  i2c_bus.read_bit(ack);
+		end
+	      i2c_bus.stop_condition;		      
+	      T3_ack: assert (ack == '0) else $error("T2: ack != '0");
+	      #100us;	
 
               // wait(T7_done);
 
@@ -61,10 +91,20 @@ program myfilter_test
 
 	      $info("T8 STOP");
 
-	      // To do: Add test	      
+	      // To do: Add test
 
-	      
+	      i2c_bus.start_condition;
+	      for (int i = I2C_DATA_BYTES - 1; i >= 0 ; i = i - 1)
+		begin
+	          i2c_bus.read_byte(tmp);
+		  $info("T8 ongoing");
+		end
+	      $info("T8 END");
+	      i2c_bus.read_bit(ack);
+	      i2c_bus.stop_condition;		      
+	      T4_ack: assert (ack == '0) else $error("T8: ack != '0");
 	      #100us;
+	      
 	      
 	   end : bus_master
 
@@ -130,7 +170,7 @@ program myfilter_test
 	      cb.ext_in <= '0;
 	      repeat(NTAPS) @(cb iff cb.extvalid_out);
 	      
-	      cb.ext_in <= -L;
+	      cb.ext_in <= L;
 	      @(cb iff cb.extvalid_out);	      
 
 	      cb.ext_in <= '0;

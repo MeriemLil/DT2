@@ -110,9 +110,7 @@ program i2c_slave_test
 	      for (int i = I2C_DATA_BYTES - 1; i >= 0 ; i = i - 1)
 		begin
 	          i2c_bus.write_byte(m2s_tx_byte);
-		  i2c_bus.read_bit(ack);
-		  i2c_bus.write_byte(m2s_tx_byte);
-		  i2c_bus.read_bit(ack);
+		  i2c_bus.read_bit(ack);		  
 		end
 	      i2c_bus.stop_condition;		      
 	      T3_ack: assert (ack == '0) else $error("T3: ack != '0");
@@ -136,7 +134,6 @@ program i2c_slave_test
 	      for (int i = I2C_DATA_BYTES - 1; i >= 0 ; i = i - 1)
 		begin
 	          i2c_bus.read_byte(s2m_rx_byte);
-		  i2c_bus.read_byte(s2m_rx_byte);
 		end
 	      i2c_bus.read_bit(ack);
 	      i2c_bus.stop_condition;		      
