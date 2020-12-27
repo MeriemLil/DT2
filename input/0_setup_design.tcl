@@ -116,7 +116,7 @@ switch $DESIGN_NAME {
 			      }
 	set SDC_FILE input/myfilter.sdc
 	set QUESTA_INIT_FILE input/myfilter.questa_init
-        #set VSIM_DISABLE_TIMINGCHECKS { "*sff1*" }
+        set VSIM_DISABLE_TIMINGCHECKS { "*sff1*" }
 	set SYNTHESIS_DONT_UNGROUP { "reset_sync" "i2c_slave" "filter_unit"  }
 	set SYNTHESIS_FIX_HOLD 1
 	set SYNTHESIS_RECREM_ARCS 1
@@ -148,7 +148,7 @@ switch $DESIGN_NAME {
 	set SDC_FILE input/i2c_slave.sdc
 	set QUESTA_INIT_FILE input/i2c_slave.questa_init
 	set GATELEVEL_SIMULATION_CONFIGURATION "input/i2c_slave_gatelevel_cfg.sv"
-	#set VSIM_DISABLE_TIMINGCHECKS { "*sff1*" }
+	set VSIM_DISABLE_TIMINGCHECKS { "*sff1*" }
 	set SYNTHESIS_DONT_UNGROUP { "i2c_sync" "i2c_detector" "i2c_srg" "i2c_ctr" "i2c_omux" "i2c_fsm" }
     }
     

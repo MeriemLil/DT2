@@ -94,13 +94,11 @@ program myfilter_test
 	      // To do: Add test
 
 	      i2c_bus.start_condition;
-	      for (int i = I2C_DATA_BYTES - 1; i >= 0 ; i = i - 1)
-		begin
-	          i2c_bus.read_byte(tmp);
-		  $info("T8 ongoing");
-		end
-	      $info("T8 END");
+
+	      i2c_bus.read_byte(tmp);
+
 	      i2c_bus.read_bit(ack);
+
 	      i2c_bus.stop_condition;		      
 	      T4_ack: assert (ack == '0) else $error("T8: ack != '0");
 	      #100us;
